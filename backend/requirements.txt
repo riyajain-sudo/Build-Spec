@@ -1,0 +1,14 @@
+﻿fastapi
+uvicorn[standard]
+rdkit
+scikit-learn
+xgboost
+shap
+pandas
+numpy
+joblib
+sqlalchemy
+python-dotenv
+anthropic
+pytest
+httpx
