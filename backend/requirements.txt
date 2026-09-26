@@ -13,3 +13,4 @@ google-genai
 pytest
 httpx
 requests
+matplotlib
