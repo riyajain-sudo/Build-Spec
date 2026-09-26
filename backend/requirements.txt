@@ -9,6 +9,7 @@ numpy
 joblib
 sqlalchemy
 python-dotenv
-anthropic
+google-genai
 pytest
 httpx
+requests

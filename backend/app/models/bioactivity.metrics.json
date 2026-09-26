@@ -1,0 +1,48 @@
+{
+  "per_target": {
+    "ABL1": {
+      "n_test": 244,
+      "active_rate": 0.7540983606557377,
+      "roc_auc": 0.9269927536231883,
+      "accuracy": 0.8688524590163934,
+      "majority_baseline_accuracy": 0.7540983606557377
+    },
+    "BRAF": {
+      "n_test": 294,
+      "active_rate": 0.7789115646258503,
+      "roc_auc": 0.8902250587840107,
+      "accuracy": 0.8571428571428571,
+      "majority_baseline_accuracy": 0.7789115646258503
+    },
+    "CDK2": {
+      "n_test": 313,
+      "active_rate": 0.7028753993610224,
+      "roc_auc": 0.8459433040078201,
+      "accuracy": 0.7731629392971247,
+      "majority_baseline_accuracy": 0.7028753993610224
+    },
+    "EGFR": {
+      "n_test": 269,
+      "active_rate": 0.6245353159851301,
+      "roc_auc": 0.9230905233380481,
+      "accuracy": 0.8364312267657993,
+      "majority_baseline_accuracy": 0.6245353159851301
+    },
+    "SRC": {
+      "n_test": 340,
+      "active_rate": 0.5852941176470589,
+      "roc_auc": 0.8892690402366442,
+      "accuracy": 0.8029411764705883,
+      "majority_baseline_accuracy": 0.5852941176470589
+    },
+    "VEGFR2": {
+      "n_test": 301,
+      "active_rate": 0.7807308970099668,
+      "roc_auc": 0.7698903932946486,
+      "accuracy": 0.8073089700996677,
+      "majority_baseline_accuracy": 0.7807308970099668
+    }
+  },
+  "pooled_roc_auc": 0.8838133649420422,
+  "pooled_accuracy": 0.8216922203293583
+}

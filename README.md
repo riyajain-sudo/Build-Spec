@@ -10,7 +10,7 @@ cd backend
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-copy .env.example .env      # add ANTHROPIC_API_KEY later
+copy .env.example .env      # add GEMINI_API_KEY later
 uvicorn app.main:app --reload
 ```
 Check http://localhost:8000/health.
