@@ -42,7 +42,9 @@ export default function MoleculeInput({ onAnalyze, loading }) {
       setError(mode === "draw" ? "Draw a molecule on the canvas first." : "Enter a SMILES string, or pick an example.");
       return;
     }
-    onAnalyze(value);
+    // keep the example's name only while the SMILES is still exactly that example
+    const example = EXAMPLES.find((ex) => ex.smiles === value);
+    onAnalyze(value, example?.name);
   };
 
   const pickExample = (s) => {
@@ -89,7 +91,7 @@ export default function MoleculeInput({ onAnalyze, loading }) {
       {error && <p role="alert" className="mt-2 text-sm text-rose-600">{error}</p>}
 
       <button type="submit" disabled={loading}
-              className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60">
+              className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60">
         {loading ? "Analyzing…" : "Analyze molecule"}
       </button>
     </form>

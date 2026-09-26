@@ -1,6 +1,7 @@
 import { BrowserRouter, NavLink, Navigate, Route, Routes } from "react-router-dom";
 import PredictPage from "./pages/PredictPage.jsx";
 import RepurposePage from "./pages/RepurposePage.jsx";
+import ThemeToggle from "./components/ThemeToggle.jsx";
 
 const linkClass = ({ isActive }) =>
   `rounded-md px-3 py-1.5 text-sm font-medium ${isActive ? "bg-indigo-100 text-indigo-800" : "text-slate-600 hover:text-slate-900"}`;
@@ -14,6 +15,7 @@ export default function App() {
             <span className="mr-4 text-lg font-bold text-indigo-700">Drug Discovery</span>
             <NavLink to="/predict" className={linkClass}>Predict molecule</NavLink>
             <NavLink to="/repurpose" className={linkClass}>Repurpose drugs</NavLink>
+            <ThemeToggle />
           </nav>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-6">

@@ -5,7 +5,7 @@ export default function StructureImage({ smiles, label, width = 320, height = 22
   const [failed, setFailed] = useState(false);
   return (
     <figure className="m-0 flex flex-col items-center">
-      <div className="flex w-full items-center justify-center rounded-lg border border-slate-200 bg-white p-2"
+      <div className="flex w-full items-center justify-center rounded-lg border border-slate-200 bg-[#ffffff] p-2"
            style={{ minHeight: 120 }}>
         {failed ? (
           <span className="text-xs text-slate-400">Structure unavailable</span>

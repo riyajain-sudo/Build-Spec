@@ -30,11 +30,14 @@ export const predictToxicity = (smiles) =>
   post("/predict/toxicity", { smiles, explain_top_n: 13, top_k_features: 8 });
 export const predictDruglikeness = (smiles) => post("/predict/druglikeness", { smiles });
 
+export const getMoleculeInfo = (smiles) => request(`/molecule/info?smiles=${encodeURIComponent(smiles)}`);
+
 export const analyzeMolecule = async (smiles) => {
-  const [bioactivity, toxicity, druglikeness] = await Promise.all([
+  const [bioactivity, toxicity, druglikeness, info] = await Promise.all([
     predictBioactivity(smiles), predictToxicity(smiles), predictDruglikeness(smiles),
+    getMoleculeInfo(smiles).catch(() => null), // identity details are a bonus: never fail the analysis
   ]);
-  return { bioactivity, toxicity, druglikeness };
+  return { bioactivity, toxicity, druglikeness, info };
 };
 
 export const searchDiseases = (q, limit = 8) =>

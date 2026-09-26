@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+/*
+ * Dark mode: the components use Tailwind's slate/indigo/rose/emerald/sky/amber scales, so
+ * dark mode re-maps those scale variables instead of duplicating every class with dark: variants.
+ * 50-200 become deep dark tints (backgrounds, borders); 600-900 text becomes light.
+ * The 500/600 accent shades (bars, primary buttons) are left as they are.
+ */
+.dark {
+  color-scheme: dark; /* dark native inputs, scrollbars */
+
+  --color-slate-50: #020617;  /* page background */
+  --color-slate-100: #1e293b; /* tracks, chips */
+  --color-slate-200: #334155; /* borders */
+  --color-slate-300: #475569;
+  --color-slate-500: #94a3b8;
+  --color-slate-600: #cbd5e1;
+  --color-slate-700: #e2e8f0;
+  --color-slate-800: #f1f5f9;
+  --color-slate-900: #f8fafc;
+
+  --color-indigo-50: #1e1b4b;
+  --color-indigo-100: #312e81;
+  --color-indigo-200: #3730a3;
+  --color-indigo-700: #a5b4fc;
+  --color-indigo-800: #c7d2fe;
+
+  --color-rose-50: #4c0519;
+  --color-rose-100: #881337;
+  --color-rose-200: #9f1239;
+  --color-rose-600: #fb7185;
+  --color-rose-700: #fda4af;
+  --color-rose-800: #fecdd3;
+
+  --color-emerald-100: #064e3b;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+
+  --color-sky-700: #7dd3fc;
+
+  --color-amber-50: #451a03;
+  --color-amber-900: #fde68a;
+}
+
+/* Cards: `bg-white` is also used by text-white-on-button classes' variable, so remap the utility, not the variable. */
+.dark .bg-white {
+  background-color: #0f172a;
+}

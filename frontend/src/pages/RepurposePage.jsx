@@ -46,7 +46,7 @@ function DiseaseSearch({ onSelect, loading }) {
           )}
         </div>
         <button type="submit" disabled={loading || !text.trim()}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60">
+                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60">
           {loading ? "Searching…" : "Find candidates"}
         </button>
       </div>

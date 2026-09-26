@@ -20,6 +20,8 @@ async def lifespan(app: FastAPI):
     try:
         from app.services.repurposing import load_index
         load_index()
+        from app.services.molecule_info import _drug_index
+        _drug_index()
     except Exception:  # repurposing DB not seeded yet: /repurpose returns 503 until it is
         pass
     yield

@@ -60,19 +60,67 @@ function DrugLikeness({ data }) {
   );
 }
 
+const titleCase = (s) => s.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
+
+function MoleculeIdentity({ smiles, info, exampleName }) {
+  const [copied, setCopied] = useState(false);
+  // name: the approved-drug match if there is one, otherwise the example button that was clicked
+  const name = info?.name ? titleCase(info.name) : exampleName;
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(smiles);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch { /* clipboard unavailable */ }
+  };
+  const canonicalDiffers = info && info.canonical_smiles !== smiles;
+  return (
+    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <StructureImage smiles={smiles} width={400} height={300} label={null} />
+      <h2 className="mb-0 mt-3 text-lg font-semibold text-slate-900">{name ?? "Unnamed molecule"}</h2>
+      {info?.name && (
+        <p className="m-0 text-xs font-medium text-emerald-700">
+          Approved drug{info.approved_for.length > 0 && <> · {info.approved_for.slice(0, 3).join(", ")}</>}
+        </p>
+      )}
+      {!name && <p className="m-0 text-xs text-slate-500">Not an approved drug in the local database</p>}
+      {info && (
+        <p className="mb-0 mt-1 text-sm text-slate-600">
+          {info.formula} · {info.molecular_weight} g/mol
+        </p>
+      )}
+      <div className="mt-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Input SMILES</span>
+          <button type="button" onClick={copy} className="text-xs text-indigo-700 hover:underline">
+            {copied ? "Copied" : "Copy"}
+          </button>
+        </div>
+        <p className="m-0 mt-1 break-all rounded-md bg-slate-100 p-2 font-mono text-xs text-slate-700">{smiles}</p>
+        {canonicalDiffers && (
+          <>
+            <span className="mt-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">Canonical SMILES</span>
+            <p className="m-0 mt-1 break-all rounded-md bg-slate-100 p-2 font-mono text-xs text-slate-700">{info.canonical_smiles}</p>
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export default function PredictPage() {
   const [state, setState] = useState({ status: "idle" });
 
-  const analyze = async (smiles) => {
+  const analyze = async (smiles, exampleName) => {
     setState({ status: "loading", smiles });
     try {
-      setState({ status: "done", smiles, data: await analyzeMolecule(smiles) });
+      setState({ status: "done", smiles, exampleName, data: await analyzeMolecule(smiles) });
     } catch (e) {
       setState({ status: "error", smiles, message: e.message });
     }
   };
 
-  const { status, smiles, data, message } = state;
+  const { status, smiles, exampleName, data, message } = state;
   return (
     <div className="space-y-5">
       <div>
@@ -96,10 +144,7 @@ export default function PredictPage() {
       {status === "done" && (
         <div className="grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]">
           <div className="space-y-5">
-            <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-              <StructureImage smiles={smiles} label="Input molecule" width={400} height={300} />
-              <p className="mb-0 mt-2 break-all font-mono text-xs text-slate-500">{smiles}</p>
-            </section>
+            <MoleculeIdentity smiles={smiles} info={data.info} exampleName={exampleName} />
             <DrugLikeness data={data.druglikeness} />
           </div>
           <div className="space-y-5">

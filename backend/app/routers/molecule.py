@@ -4,6 +4,7 @@ from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
 
 from app.ml.featurize import parse_smiles
+from app.services.molecule_info import molecule_info
 
 router = APIRouter(prefix="/molecule", tags=["molecule"])
 
@@ -22,3 +23,12 @@ def molecule_svg(smiles: str = Query(..., min_length=1, max_length=500),
     drawer.FinishDrawing()
     return Response(drawer.GetDrawingText(), media_type="image/svg+xml",
                     headers={"Cache-Control": "public, max-age=86400"})
+
+
+@router.get("/info")
+def molecule_details(smiles: str = Query(..., min_length=1, max_length=500)):
+    """Formula, weight, canonical SMILES, and the drug name when the molecule is an approved drug."""
+    try:
+        return molecule_info(smiles)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
