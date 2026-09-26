@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import predict
+from app.routers import molecule, predict, repurpose
 
 
 @asynccontextmanager
@@ -17,6 +17,11 @@ async def lifespan(app: FastAPI):
             loader()
         except FileNotFoundError:
             pass
+    try:
+        from app.services.repurposing import load_index
+        load_index()
+    except Exception:  # repurposing DB not seeded yet: /repurpose returns 503 until it is
+        pass
     yield
 
 
@@ -28,6 +33,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(predict.router)
+app.include_router(repurpose.router)
+app.include_router(repurpose.diseases_router)
+app.include_router(molecule.router)
 
 
 @app.get("/health")

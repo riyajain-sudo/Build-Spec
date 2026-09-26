@@ -9,8 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ketcher-core": "^3.14.0",
+    "ketcher-react": "^3.14.0",
+    "ketcher-standalone": "^3.14.0",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

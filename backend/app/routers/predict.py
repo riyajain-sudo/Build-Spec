@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 from app.ml.druglikeness import assess_druglikeness
 from app.ml.explain import explain
+from app.ml.llm_explain import build_context, generate_explanation
 from app.ml.predict_bioactivity import load_bundle as load_bioactivity
 from app.ml.predict_bioactivity import predict_bioactivity
 from app.ml.predict_toxicity import FLAG_THRESHOLD, predict_toxicity
@@ -16,6 +17,7 @@ class PredictRequest(BaseModel):
     smiles: str = Field(..., min_length=1, max_length=500, examples=["CC(=O)Oc1ccccc1C(=O)O"])
     explain_top_n: int = Field(3, ge=0, le=13, description="SHAP breakdown for the N highest-scoring endpoints")
     top_k_features: int = Field(8, ge=1, le=25, description="Features listed per SHAP breakdown")
+    include_llm_explanation: bool = Field(True, description="Add a 2-3 sentence plain-English explanation (LLM call)")
 
 
 class SmilesRequest(BaseModel):
@@ -45,7 +47,14 @@ def _run(kind: str, req: PredictRequest, predict_fn, load_fn, positive_label: st
         })
     explanations = [explain(kind, pr["endpoint"], req.smiles, req.top_k_features)
                     for pr in predictions[:req.explain_top_n]]
-    return {"smiles": req.smiles, "predictions": predictions, "explanations": explanations}
+    result = {"smiles": req.smiles, "predictions": predictions, "explanations": explanations}
+    if req.include_llm_explanation:
+        top = predictions[0]
+        top_expl = explanations[0] if explanations else explain(kind, top["endpoint"], req.smiles, req.top_k_features)
+        others = [p["endpoint"] for p in predictions[1:] if p["prediction"] == positive_label]
+        ctx = build_context(kind, top, top_expl, other_flagged=others)
+        result["plain_english_explanation"] = generate_explanation(ctx)
+    return result
 
 
 @router.post("/bioactivity")
